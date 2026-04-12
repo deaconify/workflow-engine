@@ -62,7 +62,40 @@ Present unresolved decisions via `AskUserQuestion` — one per call. Create robu
 
 #### Phase 2: Final IRD Approval
 
-Present the complete IRD using the **standard table format from `brain/reference/compliance-agent-patterns.md`** → "Standard IRD Presentation" section. This format is mandatory.
+Present the complete IRD using this exact table format. This format is **mandatory** — no freeform presentation.
+
+> **Issue:** #NNN — [Title]
+>
+> **Categories Evaluated:** [list with trigger reasons]
+>
+> **Constraints:**
+>
+> | # | Tier | Category | Constraint | Target |
+> | --- | --- | --- | --- | --- |
+> | 1 | MUST | [X.N] | [Specific constraint description] | [file or area] |
+> | 2 | SHOULD | [X.N] | [Specific constraint description] | [file or area] |
+> | 3 | CONSIDER | [X.N] | [Specific constraint description] | [file or area] |
+> | 4 | EXPLAIN | [X.N] | [What needs documenting] | [ADR or comment] |
+>
+> **Design Decisions Resolved:**
+>
+> | Decision | Resolution | Rationale |
+> | --- | --- | --- |
+> | [Topic] | [Chosen option] | [Why] |
+>
+> *(If no decisions: "None")*
+>
+> **Acceptance Criteria Coverage:**
+>
+> | AC | Covered By |
+> | --- | --- |
+> | [Acceptance criterion text] | Constraint #N / Functional constraint / N/A |
+>
+> *(Every checkbox from the issue must appear here)*
+>
+> **Out of Scope:** [items or "None"]
+>
+> **Already Tracked:** [issue references or "None"]
 
 The user approves, modifies, or removes constraints. Once approved:
 
@@ -117,13 +150,46 @@ The reviewer performs code quality review AND IRD constraint verification.
 
 **Acceptance Criteria Cross-Check (MANDATORY):** Before presenting, re-read the IRD from disk and re-read the GitHub issue. Flag any unimplemented AC.
 
-Present using the **standard table format from `brain/reference/compliance-agent-patterns.md`** → "Standard Reviewer Results Presentation" section. This format is mandatory.
+Present using this exact table format. This format is **mandatory** — no freeform presentation. Every constraint from the Step 2b IRD must appear with its verification status.
+
+> **Reviewer Results — Issue #NNN**
+>
+> **Verdict:** [APPROVE / APPROVE with warnings / REQUEST CHANGES]
+>
+> **Requirements Compliance:**
+>
+> | # | Tier | Constraint | Status | Evidence |
+> | --- | --- | --- | --- | --- |
+> | 1 | MUST | [Constraint description] | PASS / FAIL | [file:line or evidence] |
+> | 2 | SHOULD | [Constraint description] | PASS / WARNING | [file:line or evidence] |
+>
+> **Acceptance Criteria Status:**
+>
+> | AC | Status | Evidence |
+> | --- | --- | --- |
+> | [Criterion from issue] | DONE / NOT DONE | [file:line or explanation] |
+>
+> **Issues Found:** [CRITICAL / WARNING / OBSERVATION items, or "None"]
+>
+> **New Scope Items:** [items outside IRD scope, or "None"]
 
 After presenting, use `AskUserQuestion` for each warning/observation requiring user decision.
 
 ### Step 4c: Close-Out Review & Commit
 
-Present using the **standard table format from `brain/reference/compliance-agent-patterns.md`** → "Standard Close-Out Summary" section. This format is mandatory.
+Present using this exact table format. This format is **mandatory** — no freeform presentation.
+
+> **Close-Out Review — Issue #NNN**
+>
+> | Item | Details |
+> | --- | --- |
+> | **Issue** | #NNN — [Title] |
+> | **Reviewer Verdict** | [APPROVE / APPROVE with warnings] |
+> | **IRD Compliance** | [X/Y MUST passed, Z/W SHOULD passed, or "No IRD"] |
+> | **Warnings Resolved** | [count resolved, count acknowledged, or "None"] |
+> | **Follow-up Issues** | [approved items, or "None"] |
+> | **Files Changed** | [count] ([key files]) |
+> | **Validation** | [lint: 0 errors / N warnings, typecheck: 0 errors, tests: N/N passing, build: clean] |
 
 **Lint warning policy:** The Validation row MUST show both error AND warning counts:
 
