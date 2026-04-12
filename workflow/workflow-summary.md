@@ -18,7 +18,7 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 
 - **Agents**: All invoked via Task tool. Always verify persistence after completion (`git status --short | wc -l`). Re-spawn if empty.
 - **User approvals**: Present IRD (Step 2b), reviewer results (Step 4b), and close-out (Step 4c) as markdown tables FIRST, then use a short `AskUserQuestion` for the approval question only. Never put tables inside AskUserQuestion. Fix gaps in-place, never as follow-ups.
-- **IRD persistence**: After Step 2b approval, write IRD to `brain/sessions/ird-{issue}.md` and post to GitHub. Steps 3/4 agents read from disk. Deleted at Step 8.
+- **IRD persistence**: After Step 2b approval, write IRD to `brain/sessions/ird-{issue}.md` and post the FULL IRD (complete table, not a summary) as a GitHub comment. The GitHub comment is the permanent record — never reference the temp file path in it. Steps 3/4 agents read from disk. Deleted at Step 8.
 - **Research first**: `@researcher` always runs in Step 1. All questions must present MCP-backed recommendations.
 - **IRD covers all AC**: Every acceptance criterion checkbox must have a corresponding IRD constraint.
 - **Zero warnings target**: New warnings from implementation must be fixed. Pre-existing warnings reported at close-out.

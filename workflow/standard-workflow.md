@@ -99,10 +99,10 @@ Present the complete IRD using this exact table format. This format is **mandato
 
 The user approves, modifies, or removes constraints. Once approved:
 
-1. **Write to disk:** Create `brain/sessions/ird-{issue-number}.md` with the full approved IRD
-2. **Post to GitHub:** Add a comment on the issue with the approved IRD content
-3. **Lint** the IRD file
-4. **Proceed** to Step 3
+1. **Write to disk:** Create `brain/sessions/ird-{issue-number}.md` with the full approved IRD in the exact table format above. This is the session-scoped working copy.
+2. **Post FULL IRD to GitHub:** Add a comment on the issue containing the **complete** approved IRD — the entire table format above, verbatim. Do NOT summarize, abbreviate, or link to the local file. Do NOT reference `brain/sessions/ird-{issue-number}.md` in the comment — that file is temporary and will be deleted at Step 8. The GitHub comment IS the permanent audit record.
+3. **Lint** the IRD file.
+4. **Proceed** to Step 3.
 
 All subsequent steps MUST read the IRD from `brain/sessions/ird-{issue-number}.md` using `Read`. Never from context or memory.
 
@@ -138,7 +138,7 @@ All incremental commits are squashed into a single commit at Step 8.
 
 ### Step 4: Code Review + Requirements Verification
 
-Spawn the `@reviewer` agent with: issue number AND IRD file reference. **Always set `max_turns: 50`.**
+Spawn the `@reviewer` agent with: issue number AND a reference to the IRD file. The agent prompt MUST say: "Read the approved IRD from `brain/sessions/ird-{issue-number}.md` and verify each constraint against the implementation." **Always set `max_turns: 50`.**
 
 The reviewer performs code quality review AND IRD constraint verification.
 
@@ -180,7 +180,7 @@ After presenting, use `AskUserQuestion` for each warning/observation requiring u
 Before presenting the close-out summary, the orchestrator performs an inline ADR coverage check. No agent spawn — the orchestrator does this directly.
 
 1. **Design decisions from Step 2b** — list every design decision resolved during IRD approval. For each, verify a corresponding ADR exists in `brain/decisions/`. If missing, create it now (auto-increment number, follow ADR Quality Standard from `compliance-agent-patterns.md`).
-2. **EXPLAIN constraints from IRD** — re-read the IRD from disk. For each EXPLAIN constraint, verify it has a code comment or ADR. Flag any gaps to the user.
+2. **EXPLAIN constraints from IRD** — re-read the IRD from `brain/sessions/ird-{issue-number}.md`. For each EXPLAIN constraint, verify it has a code comment or ADR. Flag any gaps to the user.
 3. **Researcher findings from Step 1** — review the key findings and best practice confirmations from the `@researcher` agent. If any finding confirmed a pattern or approach that sets a precedent (a choice future issues will follow), check whether an ADR covers it. If not, present to the user via `AskUserQuestion`: "The researcher confirmed [best practice] and we followed it. Should this be formalized as an ADR, or is it too narrow to warrant one?"
 
 Only create ADRs the user approves. After creating any new ADRs, call `brain_refresh()`.

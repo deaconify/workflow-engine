@@ -15,6 +15,10 @@ All notable changes to the workflow-engine will be documented in this file.
 - Close-out table template in compliance-agent-patterns.md updated to match (Step 4d, ADR Coverage row added).
 - Fixed MD060 table separator warnings in workflow-summary.md.
 
+### Fixed
+
+- **IRD GitHub comment must be FULL content** — Step 2b now explicitly requires posting the complete IRD in the exact table format as the GitHub comment. Previous wording ("Add a comment with the approved IRD content") was vague and led to partial/summarized posts. The comment must NOT reference the temp file path `brain/sessions/ird-{issue}.md` since it's deleted at Step 8.
+
 ## [1.1.0] - 2026-04-12
 
 ### Changed
