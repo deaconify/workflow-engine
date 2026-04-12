@@ -2,6 +2,19 @@
 
 All notable changes to the workflow-engine will be documented in this file.
 
+## [1.3.0] - 2026-04-12
+
+### Added
+
+- **TDD mandate in Standard Workflow** — Step 3 now requires Red-Green-Refactor cycle for all implementation. Tests are specifications that constrain AI-generated code.
+- **TDD in issue-worker agent** — Step 4 (Implement) now opens with TDD cycle instructions and invokes the `test-driven-development` superpowers skill for the full playbook. Includes fallback R-G-R instructions if the skill is unavailable.
+- **"Listen to Your Tests" principle** in issue-worker — test friction signals design problems; refactor production code rather than writing complex test scaffolding.
+- **TDD verification in reviewer agent** — Step 4e (Test Coverage) expanded to verify test existence alongside implementation, test-to-requirement mapping, and edge case coverage. Flags implementation without corresponding tests as a WARNING.
+
+### Why
+
+TDD policy review (2026-04-12) found that all infrastructure for TDD exists (DI, type-safe mocks, coverage thresholds, TDD superpowers skill) but no process enforcement. The gap was process, not technology. These changes add the mandate (engine) and the playbook (skill) while keeping the DI architecture that makes TDD practical.
+
 ## [1.2.0] - 2026-04-12
 
 ### Added

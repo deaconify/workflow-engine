@@ -141,6 +141,22 @@ After creating/updating an ADR, call `brain_refresh()`.
 
 ### Step 4: Implement
 
+**Invoke the `test-driven-development` skill** for the full TDD playbook before writing any code. If the skill is unavailable, follow the Red-Green-Refactor cycle below.
+
+#### Test-Driven Development (mandatory)
+
+For each requirement or acceptance criterion, follow the **Red-Green-Refactor** cycle:
+
+1. **Red** — Write a failing test that defines the expected behavior. Run the test suite to confirm it fails. A test that passes immediately is not testing anything new.
+2. **Green** — Write the minimal production code to make the failing test pass. Do not add functionality beyond what the test requires.
+3. **Refactor** — Clean up both test and production code (remove duplication, improve naming, extract helpers) while keeping all tests green. This step is not optional.
+
+**Why TDD matters for AI agents:** Tests are specifications that constrain AI-generated code. Writing the test first prevents plausible-but-wrong implementations that pass superficial review but fail in production. The failing test is proof that the test actually verifies something.
+
+**"Listen to Your Tests":** If a test is hard to write, that's a design signal — refactor the production code (add dependency injection, extract an interface, split responsibilities) rather than writing complex test scaffolding. Test friction indicates a design problem, not a testing problem.
+
+#### Project Patterns
+
 Read `project-context.md` for the critical patterns section and follow them strictly. Common patterns include:
 
 - **Authentication** — follow the project's auth pattern

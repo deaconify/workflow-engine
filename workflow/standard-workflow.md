@@ -116,6 +116,14 @@ Spawn the `@issue-worker` agent with: issue context, research findings, AND a re
 
 The issue-worker reads `brain/reference/project-context.md` for all implementation conventions — they are NOT repeated here.
 
+**TDD mandate:** Implementation follows the **Red-Green-Refactor** cycle. For each requirement or acceptance criterion:
+
+1. **Red** — Write a failing test that defines the expected behavior
+2. **Green** — Write the minimal production code to make the test pass
+3. **Refactor** — Clean up both test and production code while keeping tests green
+
+Tests are specifications for AI-generated code — writing the test first constrains what the implementation must do and prevents plausible-but-wrong output. The `@issue-worker` agent invokes the `test-driven-development` skill for the detailed TDD playbook. If the skill is unavailable, the agent follows the Red-Green-Refactor cycle directly.
+
 #### Large-scope implementation (20+ files)
 
 When the issue requires changing more than 20 files, use the **commit-verify-continue** cycle:

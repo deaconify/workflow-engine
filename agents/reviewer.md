@@ -122,8 +122,13 @@ Cross-reference against MCP documentation.
 #### 4d. Security
 No exposed secrets, proper auth, input validation, data isolation.
 
-#### 4e. Test Coverage
-New behaviors covered, edge cases tested, existing tests still valid.
+#### 4e. Test Coverage (TDD Verification)
+
+- **Test existence** — every new behavior or requirement MUST have a corresponding test. If implementation files were added/modified but no test files were added/modified, this is a **WARNING** — "Implementation without corresponding tests."
+- **Test-to-requirement mapping** — test descriptions (`describe`/`it`/`test` blocks) should map to issue requirements and acceptance criteria. Flag tests with vague names that don't clearly state what behavior they verify.
+- **Edge cases and error paths** — are failure scenarios tested, not just happy paths?
+- **Existing tests still valid** — no broken tests, no skipped tests, no deleted tests.
+- **Coverage thresholds** — met per project requirements (read from project-context.md or testing-strategy.md).
 
 #### 4f. Code Quality
 No dead code (check sibling context from Step 1b), consistent style, no over-engineering.
