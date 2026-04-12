@@ -143,15 +143,16 @@ Presented after design decisions are resolved:
 >
 > **New Scope Items:** [items outside IRD scope, or "None"]
 
-### Standard Close-Out Summary (Step 4c)
+### Standard Close-Out Summary (Step 4d)
 
 > **Close-Out Review — Issue #NNN**
 >
 > | Item | Details |
-> |------|---------|
+> | --- | --- |
 > | **Issue** | #NNN — [Title] |
 > | **Reviewer Verdict** | [APPROVE / APPROVE with warnings] |
 > | **IRD Compliance** | [X/Y MUST passed, Z/W SHOULD passed, or "No IRD"] |
+> | **ADR Coverage** | [X design decisions documented, Y EXPLAIN constraints satisfied, Z researcher findings reviewed — or "No IRD"] |
 > | **Warnings Resolved** | [count resolved, count acknowledged, or "None"] |
 > | **Follow-up Issues** | [approved items, or "None"] |
 > | **Files Changed** | [count] ([key files]) |

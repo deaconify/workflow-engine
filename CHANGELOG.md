@@ -2,6 +2,19 @@
 
 All notable changes to the workflow-engine will be documented in this file.
 
+## [1.2.0] - 2026-04-12
+
+### Added
+
+- **Step 4c: ADR Coverage Check** — new orchestrator-inline step between reviewer approval (4b) and close-out (4d). Verifies all design decisions from Step 2b have corresponding ADRs, all EXPLAIN constraints are documented, and researcher findings that set precedents are formalized. No agent spawn — orchestrator does it directly. Presents gaps to user via `AskUserQuestion`.
+- **ADR Coverage row** in the close-out summary table (Step 4d) — reports design decisions documented, EXPLAIN constraints satisfied, and researcher findings reviewed.
+
+### Changed
+
+- Close-out summary moved from Step 4c to **Step 4d** to accommodate the new ADR check step.
+- Close-out table template in compliance-agent-patterns.md updated to match (Step 4d, ADR Coverage row added).
+- Fixed MD060 table separator warnings in workflow-summary.md.
+
 ## [1.1.0] - 2026-04-12
 
 ### Changed

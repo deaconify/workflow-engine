@@ -175,7 +175,19 @@ Present using this exact table format. This format is **mandatory** — no freef
 
 After presenting, use `AskUserQuestion` for each warning/observation requiring user decision.
 
-### Step 4c: Close-Out Review & Commit
+### Step 4c: ADR Coverage Check (Orchestrator — Inline)
+
+Before presenting the close-out summary, the orchestrator performs an inline ADR coverage check. No agent spawn — the orchestrator does this directly.
+
+1. **Design decisions from Step 2b** — list every design decision resolved during IRD approval. For each, verify a corresponding ADR exists in `brain/decisions/`. If missing, create it now (auto-increment number, follow ADR Quality Standard from `compliance-agent-patterns.md`).
+2. **EXPLAIN constraints from IRD** — re-read the IRD from disk. For each EXPLAIN constraint, verify it has a code comment or ADR. Flag any gaps to the user.
+3. **Researcher findings from Step 1** — review the key findings and best practice confirmations from the `@researcher` agent. If any finding confirmed a pattern or approach that sets a precedent (a choice future issues will follow), check whether an ADR covers it. If not, present to the user via `AskUserQuestion`: "The researcher confirmed [best practice] and we followed it. Should this be formalized as an ADR, or is it too narrow to warrant one?"
+
+Only create ADRs the user approves. After creating any new ADRs, call `brain_refresh()`.
+
+Include the results in the close-out summary's **ADR Coverage** row.
+
+### Step 4d: Close-Out Review & Commit
 
 Present using this exact table format. This format is **mandatory** — no freeform presentation.
 
@@ -186,6 +198,7 @@ Present using this exact table format. This format is **mandatory** — no freef
 > | **Issue** | #NNN — [Title] |
 > | **Reviewer Verdict** | [APPROVE / APPROVE with warnings] |
 > | **IRD Compliance** | [X/Y MUST passed, Z/W SHOULD passed, or "No IRD"] |
+> | **ADR Coverage** | [X design decisions documented, Y EXPLAIN constraints satisfied, Z researcher findings reviewed — or "No IRD"] |
 > | **Warnings Resolved** | [count resolved, count acknowledged, or "None"] |
 > | **Follow-up Issues** | [approved items, or "None"] |
 > | **Files Changed** | [count] ([key files]) |

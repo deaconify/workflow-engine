@@ -26,13 +26,14 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 - **Large scope (20+ files)**: Commit-verify-continue cycle — batch 15-20 files, verify, typecheck, commit.
 - **IRD table format (Step 2b)**: Header (Issue, Categories) → Constraints table (# / Tier / Category / Constraint / Target) → Design Decisions table → AC Coverage table → Out of Scope → Already Tracked. Template is inlined in `standard-workflow.md` Step 2b.
 - **Reviewer table format (Step 4b)**: Verdict → Requirements Compliance table (# / Tier / Constraint / Status / Evidence) → AC Status table → Issues Found → New Scope Items. Template is inlined in `standard-workflow.md` Step 4b.
-- **Close-out table format (Step 4c)**: Single summary table (Issue / Verdict / IRD Compliance / Warnings / Follow-ups / Files / Validation). Template is inlined in `standard-workflow.md` Step 4c.
+- **ADR coverage check (Step 4c)**: Orchestrator verifies all design decisions have ADRs, all EXPLAIN constraints are documented, and researcher findings that set precedents are formalized. Done inline, no agent spawn.
+- **Close-out table format (Step 4d)**: Single summary table (Issue / Verdict / IRD Compliance / ADR Coverage / Warnings / Follow-ups / Files / Validation). Template is inlined in `standard-workflow.md` Step 4d.
 - **CLAUDE.md is read-only**. Update `brain/reference/project-context.md` for project changes. Workflow changes go through the workflow-engine repo.
 
 ## Workflow Steps
 
 | Step | Phase | Agent | Purpose |
-|------|-------|-------|---------|
+| --- | --- | --- | --- |
 | 0 | Setup | Orchestrator | Session start, populate current-state.md |
 | 1 | Planning | `@issue-worker` + `@researcher` | Read issue + research (parallel) |
 | 1b | Planning | Orchestrator | Triage compliance categories |
@@ -41,7 +42,8 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 | 3 | Implementation | `@issue-worker` | Implement with IRD constraints |
 | 4 | Implementation | `@reviewer` | Code review + IRD verification |
 | 4b | Implementation | Orchestrator | User reviews results |
-| 4c | Implementation | Orchestrator | Close-out summary + approval |
+| 4c | Implementation | Orchestrator | ADR coverage check (inline) |
+| 4d | Implementation | Orchestrator | Close-out summary + approval |
 | 5 | Close-out | `@github-updater` | Update/close GitHub issues |
 | 6 | Close-out | `@documenter` | Update capability docs |
 | 7 | Close-out | `@drift-detector` | Update all brain docs |
@@ -50,7 +52,7 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 ## Agent Reference
 
 | Agent | File | Model | Purpose |
-|-------|------|-------|---------|
+| --- | --- | --- | --- |
 | `issue-worker` | `.claude/agents/issue-worker.md` | opus | Read issue + implement |
 | `researcher` | `.claude/agents/researcher.md` | sonnet | MCP documentation research |
 | `requirements-planner` | `.claude/agents/requirements-planner.md` | opus | Security/compliance analysis → IRD |
