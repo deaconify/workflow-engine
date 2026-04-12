@@ -35,7 +35,7 @@ chmod +x .claude/hooks/workflow-sync.sh
 
 ## Structure
 
-```
+```text
 workflow-engine/
 ├── agents/           # 9 generalized agent definitions
 ├── workflow/         # Shared workflow reference docs
@@ -62,7 +62,7 @@ workflow-engine/
 ## Agents
 
 | Agent | Purpose |
-|-------|---------|
+| ----- | ------- |
 | `issue-worker` | Read issue + implement with IRD constraints |
 | `researcher` | MCP-powered documentation research |
 | `requirements-planner` | Security/compliance analysis → IRD |
@@ -76,7 +76,7 @@ workflow-engine/
 ## Synced vs Local Files
 
 | File | Synced? | Notes |
-|------|---------|-------|
+| ---- | ------- | ----- |
 | `.claude/agents/*.md` | Yes | Overwritten on sync |
 | `brain/reference/standard-workflow.md` | Yes | Full protocol |
 | `brain/reference/workflow-summary.md` | Yes | Concise invariants |
