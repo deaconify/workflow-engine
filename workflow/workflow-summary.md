@@ -62,6 +62,7 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 ## Project Context
 
 All project-specific configuration lives in `brain/reference/project-context.md`:
+
 - Project identity, tech stack, architecture
 - Validation commands (lint, typecheck, test, build)
 - GitHub repo, labels, naming conventions
