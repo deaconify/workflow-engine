@@ -4,8 +4,6 @@ doc_type: reference
 tags: [security, data-protection, audit, architecture]
 ---
 
-# Requirements Planning Trigger Matrix
-
 > **SCAFFOLDING FILE — Copied on init, never overwritten by sync.**
 > This file is project-specific. Each project customizes it with their own file patterns and compliance categories. The template below provides a starting structure.
 

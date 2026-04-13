@@ -5,8 +5,6 @@ related_capabilities: []
 tags: [ci-cd, testing, security, audit]
 ---
 
-# Standard Issue Workflow
-
 This document contains the full orchestration protocol for the Standard Issue Workflow. It is referenced from CLAUDE.md and read on-demand when the workflow is triggered. Issues follow [[github-standards]] naming and label conventions. Compliance requirements are assessed via the [[compliance-trigger-matrix]].
 
 ## Step 0: Session Start

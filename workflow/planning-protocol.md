@@ -5,8 +5,6 @@ related_capabilities: []
 tags: [roadmap, product-vision, architecture]
 ---
 
-# Planning Protocol
-
 > Referenced from CLAUDE.md. Full planning workflow, issue template, and creation process. Issues follow [[github-standards]] naming conventions.
 
 ## Planning Workflow

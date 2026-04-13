@@ -7,8 +7,6 @@ active_issue: null
 status: idle
 ---
 
-# Current Session State
-
 ## Active Work
 
 - **Issue**: None
@@ -38,4 +36,4 @@ None
 ## Recent Capability Activity
 
 | Capability | Issue | Date | Summary |
-|-----------|-------|------|---------|
+| ---------- | ----- | ---- | ------- |

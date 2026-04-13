@@ -108,18 +108,23 @@ Budget: 4-6 tool calls max. Focus on 1-2 most impactful technologies. Skip well-
 Read the pattern compliance checklist from `project-context.md` and `architecture-patterns.md`, then verify:
 
 #### 4a. Requirements Satisfaction
+
 For every requirement checkbox — is it implemented? Where?
 
 #### 4b. Acceptance Criteria
+
 For every criterion — can it be verified? Are there tests?
 
 #### 4c. Architecture Patterns
+
 Read `brain/reference/architecture-patterns.md` for canonical patterns. Verify the implementation follows them. Also check `brain/decisions/` for existing ADRs.
 
 #### 4c-ii. External API & Library Usage (from Step 3b)
+
 Cross-reference against MCP documentation.
 
 #### 4d. Security
+
 No exposed secrets, proper auth, input validation, data isolation.
 
 #### 4e. Test Coverage (TDD Verification)
@@ -131,12 +136,15 @@ No exposed secrets, proper auth, input validation, data isolation.
 - **Coverage thresholds** — met per project requirements (read from project-context.md or testing-strategy.md).
 
 #### 4f. Code Quality
+
 No dead code (check sibling context from Step 1b), consistent style, no over-engineering.
 
 #### 4g. Acceptance Criteria Cross-Check (MANDATORY)
+
 Independent of IRD — re-read the issue and verify every AC checkbox. Unimplemented AC is CRITICAL.
 
 #### 4h. Requirements Compliance (IRD Verification)
+
 If IRD provided, verify each constraint by tier (MUST/SHOULD/CONSIDER/EXPLAIN).
 
 ### Step 5: Produce Structured Review

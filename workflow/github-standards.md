@@ -5,8 +5,6 @@ related_capabilities: []
 tags: [ci-cd, roadmap, naming]
 ---
 
-# GitHub Issue Standards
-
 > Referenced from CLAUDE.md. Naming conventions, sub-issue workflow, and issue management patterns. Project-specific milestones, labels, and repo info live in `brain/reference/project-context.md`.
 
 ## Project & Milestone Structure

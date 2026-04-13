@@ -4,8 +4,6 @@ doc_type: reference
 tags: [ci-cd, testing, security]
 ---
 
-# Workflow Summary
-
 Concise reference for the Standard Issue Workflow. Agents read the full protocol from `brain/reference/standard-workflow.md` during execution.
 
 ## Trigger Phrases

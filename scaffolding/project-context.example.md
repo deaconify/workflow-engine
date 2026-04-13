@@ -4,8 +4,6 @@ doc_type: reference
 tags: [architecture, deployment]
 ---
 
-# Project Context
-
 <!-- This file is the single source of truth for all project-specific configuration.
      Agents read this at runtime to adapt to your project. Fill in every section. -->
 

@@ -4,8 +4,6 @@ doc_type: reference
 tags: [security, data-protection, audit]
 ---
 
-# Requirements Planning Patterns
-
 > **Canonical source for the shift-left security and compliance workflow.** This file documents the Implementation Requirements Document (IRD) format, tier definitions, follow-up consolidation rules, and workflow patterns used by the `@requirements-planner` and `@reviewer` agents. Triggered by categories from the [[compliance-trigger-matrix]] and executed within the [[standard-workflow]].
 
 ## Workflow Overview

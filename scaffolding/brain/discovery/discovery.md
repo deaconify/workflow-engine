@@ -4,8 +4,6 @@ doc_type: reference
 tags: [architecture]
 ---
 
-# Discovery Documents
-
 This directory contains discovery context documents for open issues. These files preserve research findings, file lists, diagnostic data, and recommended approaches across sessions.
 
 ## Lifecycle
