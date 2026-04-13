@@ -38,6 +38,7 @@ All MCP tools are deferred — use `ToolSearch` to load before first use.
 ## Input
 
 You will receive:
+
 - **Issue number** — the issue to close
 - **Implementation summary** — what was implemented
 - **Files changed** — list of modified files
@@ -105,9 +106,14 @@ For each follow-up item that passed dedup:
 
 5. **Update parent body** — add `- [ ] #N — Title` checklist entry via `gh issue edit`.
 
-6. **Add to GitHub Project** (if project board is configured in project-context.md).
+6. **Add to GitHub Project and set project fields** (ONLY if a project board is configured in `project-context.md` — skip entirely if the repo does not use GitHub Projects):
+   a. Add the issue to the project: `gh project item-add PROJECT_NUM --owner OWNER --url ISSUE_URL --format json` — capture the returned `id` as `ITEM_ID`.
+   b. Read the **Project Fields** subsection of `brain/reference/project-context.md` for field IDs, option IDs, the GraphQL mutation pattern, and assignment guidelines. If that subsection does not exist, skip field-setting (board-add only).
+   c. For each field defined there (e.g., Priority, Compliance Domain, Effort), run an `updateProjectV2ItemFieldValue` GraphQL mutation using `ITEM_ID` and the option value chosen per the assignment guidelines.
 
-**After steps 1-6 for each issue, confirm: "Issue #N created, linked, and added to parent checklist."**
+#### 1c.7: Confirmation
+
+After steps 1-6 for each issue, confirm: "Issue #N created, linked, and added to parent checklist."
 
 #### 1d: Self-Verification (MANDATORY)
 
@@ -152,6 +158,7 @@ When Step 3 closes a parent, propagate up the ancestor chain:
 ## Issue Naming Convention
 
 Read the naming convention from `brain/reference/project-context.md`. Common pattern:
+
 - **Issues**: `M.I: Description` — main deliverables within a milestone
 - **Sub-issues**: `M.I.S: Description` — granular work items under an issue
 
