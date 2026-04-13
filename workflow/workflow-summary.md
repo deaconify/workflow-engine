@@ -34,7 +34,7 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 
 | Step | Phase | Agent | Purpose |
 | --- | --- | --- | --- |
-| 0 | Setup | Orchestrator | Session start, populate current-state.md |
+| 0 | Setup | Orchestrator | Workflow sync check, session start, populate current-state.md |
 | 1 | Planning | `@issue-worker` + `@researcher` | Read issue + research (parallel) |
 | 1b | Planning | Orchestrator | Triage compliance categories |
 | 2 | Planning | `@requirements-planner` | Produce IRD (conditional) |

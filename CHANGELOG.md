@@ -2,6 +2,14 @@
 
 All notable changes to the workflow-engine will be documented in this file.
 
+## [1.5.0] - 2026-04-13
+
+### Added (1.5.0)
+
+- **Step 0.0: Workflow sync check** — Standard Workflow Step 0 now runs `.claude/hooks/workflow-sync.sh check` before session setup. If an update is available, syncs automatically and informs the user. Non-blocking — if the script is missing or fails, logs a warning and continues.
+- **Sync script self-update** — `sync.sh` now copies itself to `.claude/hooks/workflow-sync.sh` during both sync and init operations. Consumers always get the latest sync script version.
+- **Sync script deployed to consumer projects** — `.claude/hooks/workflow-sync.sh` installed in both Deacon and FIN001.
+
 ## [1.4.0] - 2026-04-13
 
 ### Added (1.4.0)

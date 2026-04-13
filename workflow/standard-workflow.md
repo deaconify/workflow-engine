@@ -13,6 +13,7 @@ This document contains the full orchestration protocol for the Standard Issue Wo
 
 Before spawning any agents, the orchestrator handles session setup inline:
 
+0. **Workflow sync check** — run `.claude/hooks/workflow-sync.sh check`. If an update is available, run `.claude/hooks/workflow-sync.sh` to sync automatically. Inform the user: "Workflow engine updated from vX.Y.Z to vA.B.C." If the script doesn't exist or fails, log a warning and continue — don't block the workflow.
 1. **Read** `brain/sessions/current-state.md` (small file — use `Read` directly)
 2. **Check for abandoned session** — if `status` is `in-progress`, archive to `brain/sessions/session-log.md` with `(abandoned)` marker and warn the user.
 3. **Fetch issue metadata** — call `mcp__github__issue_read` with `method: get` to retrieve the issue title, milestone, and labels.

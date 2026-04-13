@@ -154,16 +154,24 @@ do_sync() {
   done
   log "Synced ${doc_count} workflow docs to brain/reference/"
 
-  # 3. Run contamination check on synced files
+  # 3. Self-update the sync script
+  if [[ -f "$TEMP_DIR/extracted/sync.sh" ]]; then
+    mkdir -p .claude/hooks
+    cp "$TEMP_DIR/extracted/sync.sh" ".claude/hooks/workflow-sync.sh"
+    chmod +x ".claude/hooks/workflow-sync.sh"
+    log "Sync script updated at .claude/hooks/workflow-sync.sh"
+  fi
+
+  # 4. Run contamination check on synced files
   contamination_check ".claude/agents"
   contamination_check "brain/reference"
 
-  # 4. Update version file
+  # 5. Update version file
   echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
   log "Sync complete: v${local_version} → v${REMOTE_VERSION}"
 
-  # 5. Show changelog if available
+  # 6. Show changelog if available
   if [[ -f "$TEMP_DIR/extracted/CHANGELOG.md" ]]; then
     echo ""
     echo -e "${CYAN}─── CHANGELOG ───${NC}"
@@ -251,10 +259,16 @@ do_init() {
     log "Created CLAUDE.md with @imports"
   fi
 
-  # 7. Set version file
+  # 7. Copy sync script to project hooks
+  mkdir -p .claude/hooks
+  cp "$TEMP_DIR/extracted/sync.sh" ".claude/hooks/workflow-sync.sh"
+  chmod +x ".claude/hooks/workflow-sync.sh"
+  log "Installed sync script at .claude/hooks/workflow-sync.sh"
+
+  # 8. Set version file
   echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
-  # 8. Run contamination check
+  # 9. Run contamination check
   contamination_check ".claude/agents"
 
   echo ""
