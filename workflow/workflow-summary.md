@@ -27,6 +27,17 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 - **ADR coverage check (Step 4c)**: Orchestrator verifies all design decisions have ADRs, all EXPLAIN constraints are documented, and researcher findings that set precedents are formalized. Done inline, no agent spawn.
 - **Close-out table format (Step 4d)**: Single summary table (Issue / Verdict / IRD Compliance / ADR Coverage / Warnings / Follow-ups / Files / Validation). Template is inlined in `standard-workflow.md` Step 4d.
 - **CLAUDE.md is read-only**. Update `brain/reference/project-context.md` for project changes. Workflow changes go through the workflow-engine repo.
+- **Step 8 close-out re-read**: Before close-out, the orchestrator MUST re-read `brain/reference/project-context.md` and execute every project-specific close-out obligation declared there (time tracking, external status transitions, merge policy, notifications, session-state reconciliation). Categories the project does not use are simply absent. Context compression late in long sessions otherwise causes these to be silently skipped.
+
+## Shell Hygiene
+
+Applies to the orchestrator AND every spawned agent. These rules eliminate noise and avoid common foot-guns:
+
+- **Trust your cwd.** The Bash tool's working directory persists between calls and is already set to the project root. **Never** prefix commands with `cd /path/to/project` to "be safe" — use relative paths.
+- **Only `cd` when genuinely switching repos** (e.g., stepping into a sibling project) or when the user explicitly requests it.
+- **Use dedicated tools instead of shelling out:** `Read` not `cat`/`head`/`tail`, `Grep` not `grep`/`rg`, `Glob` not `find`/`ls`, `Edit`/`Write` not `sed`/`echo >`/`cat <<EOF`.
+- **Don't run orientation commands** like `pwd` or `ls` to confirm where you are — trust the environment.
+- **Forward slashes in paths work on Windows**; quote paths with spaces rather than escaping or `cd`-ing around them.
 
 ## Workflow Steps
 
@@ -45,7 +56,7 @@ Concise reference for the Standard Issue Workflow. Agents read the full protocol
 | 5 | Close-out | `@github-updater` | Update/close GitHub issues |
 | 6 | Close-out | `@documenter` | Update capability docs |
 | 7 | Close-out | `@drift-detector` | Update all brain docs |
-| 8 | Close-out | Orchestrator | Session end, single commit |
+| 8 | Close-out | Orchestrator | Re-read project-context.md, single commit, execute project-specific close-out obligations |
 
 ## Agent Reference
 

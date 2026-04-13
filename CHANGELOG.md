@@ -2,6 +2,27 @@
 
 All notable changes to the workflow-engine will be documented in this file.
 
+## [1.7.0] - 2026-04-13
+
+### Added (1.7.0)
+
+- **Shell Hygiene section** added to all 9 agent definitions and to `workflow-summary.md`. Covers: trust the persistent Bash cwd (no `cd` prefixes), use dedicated tools over shell equivalents (`Read`/`Grep`/`Glob`/`Edit`/`Write`), no orientation commands (`pwd`/`ls`), forward slashes work on Windows.
+
+### Why (1.7.0)
+
+Sub-agents across multiple consumer projects were defensively prefixing every Bash command with `cd /path/to/project`, even though the working directory persists across calls and is already set. Per-project memory fixes caught individual instances but didn't propagate. Shared agent definitions are the right place for cross-cutting shell discipline.
+
+## [1.6.0] - 2026-04-13
+
+### Added (1.6.0)
+
+- **Step 8 project-context re-read** — Orchestrator MUST re-read `brain/reference/project-context.md` at the start of close-out and execute every project-specific close-out obligation declared there. Generic categories named in the workflow (external time tracking, external status transitions, merge policy, notifications, session-state reconciliation) — projects that don't use a category simply omit it. No project-specific terminology in the engine.
+- **Step 8 verification step** — Orchestrator must verify all declared close-out obligations were executed before declaring the session complete.
+
+### Why (1.6.0)
+
+Late in long sessions, context compression caused the orchestrator to treat "commit + push + PR" as the end of close-out and silently skip project-specific obligations declared in `project-context.md`. Step 8 had no explicit re-read instruction. The fix keeps the engine contamination-free while making the project-context re-read mandatory.
+
 ## [1.5.0] - 2026-04-13
 
 ### Added (1.5.0)

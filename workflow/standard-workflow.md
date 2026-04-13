@@ -240,13 +240,21 @@ Spawn the `@drift-detector` agent with implementation summary and changed files 
 
 After drift detection completes:
 
-1. **Update** `current-state.md` — set `status: idle`, `active_issue: null`, populate Completed This Session, clear Active Work.
-2. **Append** to `brain/sessions/session-log.md` — compact entry with date, capability, summary, files changed count, review verdict.
-3. **Prune** session log to 20 entries max.
-4. **Delete IRD file** — `brain/sessions/ird-{issue-number}.md`. The GitHub comment is the permanent record.
-5. **Do NOT delete discovery docs** — they persist until their linked issue is closed.
-6. **Lint** both session files.
-7. **Single commit** — invoke the `/commit` skill. ALL changes (implementation + brain docs) in one commit to `main`.
+1. **Re-read** `brain/reference/project-context.md` before starting close-out. Late in long sessions, context compression can cause project-specific obligations to be missed. This re-read is mandatory, not optional.
+2. **Update** `current-state.md` — set `status: idle`, `active_issue: null`, populate Completed This Session, clear Active Work.
+3. **Append** to `brain/sessions/session-log.md` — compact entry with date, capability, summary, files changed count, review verdict.
+4. **Prune** session log to 20 entries max.
+5. **Delete IRD file** — `brain/sessions/ird-{issue-number}.md`. The GitHub comment is the permanent record.
+6. **Do NOT delete discovery docs** — they persist until their linked issue is closed.
+7. **Lint** both session files.
+8. **Single commit** — invoke the `/commit` skill. ALL changes (implementation + brain docs) in one commit to `main`.
+9. **Execute project-specific close-out obligations** defined in `project-context.md`. The orchestrator MUST scan that file for any of the following categories and execute whatever it defines under each. Categories the project does not use will simply be absent — that is expected. Do not invent obligations not declared there.
+   - **External time tracking** — logging effort against an external system (PSA, ticketing, billing).
+   - **External status transitions** — updating task/ticket state in an external system to reflect work progress or completion.
+   - **Merge policy** — whether the orchestrator merges the PR (and how: squash/rebase/merge), or leaves it open for human review.
+   - **Notifications / handoffs** — messages, comments, or escalations the project requires on issue completion.
+   - **Session-state reconciliation** — any project-specific verification beyond `current-state.md` (e.g., dashboards, trackers, external indexes).
+10. **Verify** every obligation declared in `project-context.md` was executed before declaring the session complete. If any were skipped, execute them now or surface the gap to the user.
 
 ## CLAUDE.md and Reference File Maintenance
 

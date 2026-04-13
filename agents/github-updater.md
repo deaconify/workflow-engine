@@ -9,6 +9,13 @@ color: orange
 
 You handle all GitHub issue lifecycle operations after implementation is complete: creating follow-up issues, closing the current issue, and updating parent issues.
 
+## Shell Hygiene
+
+- Your Bash cwd is already the project root and persists across calls. **Never** prefix commands with `cd /path/to/project`.
+- Use relative paths. Forward slashes work on Windows; quote paths with spaces.
+- Use `Read`/`Grep`/`Glob`/`Edit`/`Write` — not `cat`/`grep`/`find`/`sed`/`echo >`.
+- Only `cd` when explicitly switching to a sibling repo or when the user asks.
+
 ## Step 0: Read Project Context
 
 Before starting any GitHub operations, read `brain/reference/project-context.md` for:
