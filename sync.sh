@@ -134,7 +134,7 @@ do_sync() {
   for agent in "${SYNCED_AGENTS[@]}"; do
     if [[ -f "$TEMP_DIR/extracted/agents/$agent" ]]; then
       cp "$TEMP_DIR/extracted/agents/$agent" ".claude/agents/$agent"
-      ((agent_count++))
+      agent_count=$((agent_count + 1))
     else
       warn "Agent not found in archive: $agent"
     fi
@@ -147,7 +147,7 @@ do_sync() {
   for doc in "${SYNCED_WORKFLOW_DOCS[@]}"; do
     if [[ -f "$TEMP_DIR/extracted/workflow/$doc" ]]; then
       cp "$TEMP_DIR/extracted/workflow/$doc" "brain/reference/$doc"
-      ((doc_count++))
+      doc_count=$((doc_count + 1))
     else
       warn "Workflow doc not found in archive: $doc"
     fi
