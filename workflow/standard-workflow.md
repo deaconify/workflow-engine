@@ -17,9 +17,18 @@ Before spawning any agents, the orchestrator handles session setup inline:
 3. **Fetch issue metadata** — call `mcp__github__issue_read` with `method: get` to retrieve the issue title, milestone, and labels.
 4. **Populate** `current-state.md` — set `active_issue`, `status: in-progress`, issue title, capability domain, milestone. Clear all other sections.
 5. **Lint** modified files with the project's markdown linter.
-6. **Proceed** to Step 1 (Planning Phase).
+6. **TaskCreate workflow tasks** — call `TaskCreate` with one task per workflow step (0, 1, 1b, 2, 2b, 3, 4, 4b, 4c, 4d, 5, 6, 7, 8). Mark Step 0 `completed` and Step 1 `in_progress`. Update status as each step finishes. **The orchestrator MUST NOT declare the workflow complete until every task is `completed`.** This is the primary defense against mid-flight termination — if steps live only in prose, context shifts drop them.
+7. **Proceed** to Step 1 (Planning Phase).
 
 > **Note:** If `brain/sessions/session-log.md` does not exist (e.g., fresh clone), create it with the standard header before proceeding.
+
+## Interruption Protocol
+
+If the user asks an unrelated question mid-workflow: answer briefly, then explicitly return to the current `in_progress` TaskList item and state which step is resuming. Do not start a new issue's workflow while any previous workflow's TaskList has open tasks. If a new issue is genuinely urgent, the orchestrator MUST either (a) finish the remaining steps of the current workflow first, or (b) explicitly confirm with the user that the current workflow is being aborted, archive `current-state.md`, and clear the TaskList before beginning the new one.
+
+## No False Terminations
+
+Reviewer APPROVE, presenting close-out results, pushing a branch, or opening a PR are all **mid-flight milestones**, not terminations. The workflow ends only when Step 8 completes: the project's merge policy (as declared in `project-context.md` — direct-to-main, squash-merge PR, rebase, or other) has been executed AND every close-out obligation in `project-context.md` has run AND the TaskList is empty. If the project does not use PRs, there is no "PR opened" pause point at all — the orchestrator commits per the project's merge policy and continues straight through Steps 5–8.
 
 ## PLANNING PHASE
 
@@ -143,6 +152,8 @@ Agent prompts for large refactoring MUST include:
 
 All incremental commits are squashed into a single commit at Step 8.
 
+> **Reminder — mid-flight.** Steps 4 through 8 are a single continuous close-out. Reviewer APPROVE, close-out table approval, and (if the project uses PRs) PR-opened are not stopping points. Keep the TaskList moving until Step 8 completes per the project's merge policy.
+
 ### Step 4: Code Review + Requirements Verification
 
 Spawn the `@reviewer` agent with: issue number AND a reference to the IRD file. The agent prompt MUST say: "Read the approved IRD from `brain/sessions/ird-{issue-number}.md` and verify each constraint against the implementation." **Always set `max_turns: 50`.**
@@ -154,6 +165,14 @@ The reviewer performs code quality review AND IRD constraint verification.
 - **APPROVE (clean)** — proceed to Step 4b.
 
 ### Step 4b: User Reviews Results
+
+**Reviewer claim verification (MANDATORY).** The reviewer is an agent, not an oracle — it can hallucinate file paths, version strings, and counts. Before presenting reviewer results:
+
+1. **File-existence claims** — for any reviewer finding that asserts a file/directory is missing, absent, or unused, run `Glob` or `Read` on the claimed path. If the file exists, mark the finding invalid and drop it from the presented results.
+2. **Count claims** — if the reviewer reports "N of M MUST passed" or similar ratios, recount from the IRD file directly at Step 4d (see below). Do not propagate reviewer-supplied ratios.
+3. **Version / dependency claims** — spot-check any reviewer assertion about a package version, config value, or flag by reading the file it references.
+
+The orchestrator owns the final results table. Reviewer output is input, not gospel.
 
 **Acceptance Criteria Cross-Check (MANDATORY):** Before presenting, re-read the IRD from disk and re-read the GitHub issue. Flag any unimplemented AC.
 
@@ -195,6 +214,14 @@ Only create ADRs the user approves. After creating any new ADRs, call `brain_ref
 Include the results in the close-out summary's **ADR Coverage** row.
 
 ### Step 4d: Close-Out Review & Commit
+
+**Constraint recount (MANDATORY before the close-out table).** Do not copy numbers from the reviewer's Step 4 output. Recount from the IRD file directly:
+
+1. `Read` `brain/sessions/ird-{issue-number}.md`.
+2. Count each tier independently: number of **MUST** rows, **SHOULD** rows, **CONSIDER** rows, **EXPLAIN** rows. These are the denominators.
+3. For each constraint, verify its current status against code state (not against the reviewer's earlier table — re-check, because in-place fixes at Step 4 may have flipped statuses).
+4. The **IRD Compliance** row in the close-out table MUST report tiers separately — never collapse MUST+SHOULD+EXPLAIN into one ratio. Format: `X/Y MUST passed, Z/W SHOULD passed, V/U EXPLAIN satisfied`.
+5. Label each number with its tier. A bare "16/17" without tier label is forbidden.
 
 Present using this exact table format. This format is **mandatory** — no freeform presentation.
 

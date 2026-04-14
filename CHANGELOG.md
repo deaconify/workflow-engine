@@ -2,6 +2,26 @@
 
 All notable changes to the workflow-engine will be documented in this file.
 
+## [1.8.0] - 2026-04-14
+
+### Added (1.8.0)
+
+- **TaskCreate mandate at Step 0** — orchestrator must create one TaskList entry per workflow step (0, 1, 1b, 2, 2b, 3, 4, 4b, 4c, 4d, 5, 6, 7, 8) and update status as it progresses. Workflow is not complete until every task is marked completed.
+- **Interruption Protocol** — mid-workflow questions get a brief answer then return to the current `in_progress` task. Starting a new issue's workflow with a non-empty TaskList from a prior issue is forbidden unless the current workflow is explicitly aborted with user confirmation.
+- **No False Terminations** — explicit statement that reviewer APPROVE, close-out table approval, branch push, and PR-opened (for projects that use PRs) are mid-flight milestones. Only Step 8 completion ends the workflow. Projects without PRs flow straight through Steps 5–8 per their merge policy (declared in `project-context.md`).
+- **Step 4 mid-flight banner** — inline reminder that Steps 4–8 are a single continuous close-out.
+- **Reviewer claim verification (Step 4b)** — orchestrator must spot-check reviewer findings about file existence, version strings, and counts before presenting. File-existence claims verified via `Glob`/`Read`.
+- **Constraint recount (Step 4d)** — IRD Compliance row is recounted from `brain/sessions/ird-{issue-number}.md` directly, never copy-pasted from the reviewer's table. Tiers reported separately (MUST / SHOULD / EXPLAIN), never collapsed into a single unlabeled ratio.
+
+### Why (1.8.0)
+
+Two failure modes observed in consumer sessions:
+
+1. **Mid-flight termination** — orchestrator stopped at "PR opened" or "reviewer APPROVE" and pivoted to a new issue, skipping Steps 4c–8 (ADR coverage, GitHub close-out, documenter, drift-detector, merge, close-out obligations). Root cause: workflow steps lived in prose and were dropped under interruption. Fix: mandate TaskCreate for Steps 0–8 so steps cannot silently disappear.
+2. **Unverified reviewer output** — orchestrator copy-pasted reviewer findings (including a hallucinated "file does not exist" claim for a file that trivially existed) and reviewer-supplied ratios into the close-out table. Root cause: treating an agent's output as authoritative without spot-checking. Fix: require file-existence verification and independent recount from the IRD file.
+
+Engine is PR-agnostic — merge policy remains defined per project in `project-context.md`.
+
 ## [1.7.0] - 2026-04-13
 
 ### Added (1.7.0)
