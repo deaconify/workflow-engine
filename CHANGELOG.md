@@ -2,6 +2,21 @@
 
 All notable changes to the workflow-engine will be documented in this file.
 
+## [1.9.0] - 2026-04-14
+
+### Added (1.9.0)
+
+- **IRD Persistence Gate** — a `PreToolUse` hook (`scaffolding/hooks/ird-gate.sh`) that blocks `Edit`/`Write`/`MultiEdit`/`NotebookEdit` on implementation files while any `brain/sessions/.ird-pending-*` sentinel exists. The gate cannot be bypassed by forgetting a step — edits to implementation files are mechanically refused until the sentinel is removed.
+- **Step 2 sentinel creation** — `standard-workflow.md` Step 2 now mandates `: > brain/sessions/.ird-pending-{issue}` before spawning the requirements-planner. This arms the gate.
+- **Step 2b Persistence Gate substeps** — rewritten as a numbered, blocking checklist: (1) `Write` IRD then `Read` it back to verify, (2) `gh issue comment ... --body-file` then `gh issue view --comments` to verify the full table posted, (3) lint, (4) remove sentinel. Explicit anti-bypass warning: never remove the sentinel to unblock yourself.
+- **sync.sh hook installation** — `init` installs `scaffolding/hooks/*.sh` to `.claude/hooks/` and, if no `.claude/settings.json` exists, creates one wired to `ird-gate.sh`. Regular `sync` refreshes hook scripts (overwrite) but leaves `settings.json` untouched. If a pre-existing `settings.json` doesn't reference `ird-gate.sh`, a warning tells the user to merge `.claude/hooks/settings.snippet.json` manually.
+
+### Why (1.9.0)
+
+Observed failure mode: orchestrator treated the IRD as a conversational artifact, got user approval, and moved straight into implementation — skipping both the `brain/sessions/ird-{issue}.md` write and the GitHub comment. Prose-level reminders in `standard-workflow.md` were not enough; the persistence step was easy to rationalize past.
+
+Fix is layered: the workflow doc now presents Step 2b persistence as a blocking gate with verification commands (readable by the agent), and the hook enforces it mechanically (unbypassable). The hook is the belt; the workflow update is the suspenders.
+
 ## [1.8.0] - 2026-04-14
 
 ### Added (1.8.0)

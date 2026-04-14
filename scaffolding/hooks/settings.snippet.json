@@ -1,0 +1,16 @@
+{
+  "_comment": "Merge this into .claude/settings.json (or settings.local.json) on init. The hook blocks Edit/Write/MultiEdit while an IRD is pending persistence (Step 2b).",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/ird-gate.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

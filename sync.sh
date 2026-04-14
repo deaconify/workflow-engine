@@ -162,6 +162,17 @@ do_sync() {
     log "Sync script updated at .claude/hooks/workflow-sync.sh"
   fi
 
+  # 3b. Refresh workflow hooks (overwrite — bug fixes must propagate)
+  if [[ -d "$TEMP_DIR/extracted/scaffolding/hooks" ]]; then
+    mkdir -p .claude/hooks
+    for hook in "$TEMP_DIR/extracted/scaffolding/hooks"/*.sh; do
+      [[ -f "$hook" ]] || continue
+      cp "$hook" ".claude/hooks/$(basename "$hook")"
+      chmod +x ".claude/hooks/$(basename "$hook")"
+    done
+    log "Workflow hooks refreshed in .claude/hooks/"
+  fi
+
   # 4. Run contamination check on synced files
   contamination_check ".claude/agents"
   contamination_check "brain/reference"
@@ -264,6 +275,34 @@ do_init() {
   cp "$TEMP_DIR/extracted/sync.sh" ".claude/hooks/workflow-sync.sh"
   chmod +x ".claude/hooks/workflow-sync.sh"
   log "Installed sync script at .claude/hooks/workflow-sync.sh"
+
+  # 7b. Install workflow hooks (ird-gate, etc.)
+  if [[ -d "$TEMP_DIR/extracted/scaffolding/hooks" ]]; then
+    for hook in "$TEMP_DIR/extracted/scaffolding/hooks"/*.sh; do
+      [[ -f "$hook" ]] || continue
+      cp "$hook" ".claude/hooks/$(basename "$hook")"
+      chmod +x ".claude/hooks/$(basename "$hook")"
+    done
+    log "Installed workflow hooks to .claude/hooks/"
+  fi
+
+  # 7c. Install hook config into .claude/settings.json (init-only; never overwrite)
+  local snippet="$TEMP_DIR/extracted/scaffolding/hooks/settings.snippet.json"
+  local settings=".claude/settings.json"
+  if [[ -f "$snippet" ]]; then
+    mkdir -p .claude
+    if [[ ! -f "$settings" ]]; then
+      if command -v jq >/dev/null 2>&1; then
+        jq 'del(._comment)' "$snippet" > "$settings"
+      else
+        grep -v '"_comment"' "$snippet" > "$settings"
+      fi
+      log "Created $settings with ird-gate hook"
+    elif ! grep -q "ird-gate.sh" "$settings"; then
+      warn "$settings exists but does not reference ird-gate.sh — merge manually from .claude/hooks/settings.snippet.json"
+      cp "$snippet" ".claude/hooks/settings.snippet.json"
+    fi
+  fi
 
   # 8. Set version file
   echo "$REMOTE_VERSION" > "$VERSION_FILE"

@@ -52,6 +52,12 @@ After Step 1 completes, determine which security/compliance categories apply:
 
 ### Step 2: Requirements Planning (Conditional)
 
+**Before spawning the planner**, create the IRD pending sentinel. This arms the `ird-gate` hook that will block Edit/Write/MultiEdit on implementation files until Step 2b persistence completes:
+
+```bash
+mkdir -p brain/sessions && : > "brain/sessions/.ird-pending-{issue-number}"
+```
+
 Spawn the `@requirements-planner` agent with: issue context, research findings, affected files, and relevant checklist categories. **Set `max_turns: 30`.**
 
 The planner produces an **Implementation Requirements Document (IRD)** with tiered constraints (MUST/SHOULD/CONSIDER/EXPLAIN). See `brain/reference/compliance-agent-patterns.md` for the IRD format and tier definitions.
@@ -105,12 +111,28 @@ Present the complete IRD using this exact table format. This format is **mandato
 >
 > **Already Tracked:** [issue references or "None"]
 
-The user approves, modifies, or removes constraints. Once approved:
+The user approves, modifies, or removes constraints.
 
-1. **Write to disk:** Create `brain/sessions/ird-{issue-number}.md` with the full approved IRD in the exact table format above. This is the session-scoped working copy.
-2. **Post FULL IRD to GitHub:** Add a comment on the issue containing the **complete** approved IRD — the entire table format above, verbatim. Do NOT summarize, abbreviate, or link to the local file. Do NOT reference `brain/sessions/ird-{issue-number}.md` in the comment — that file is temporary and will be deleted at Step 8. The GitHub comment IS the permanent audit record.
-3. **Lint** the IRD file.
-4. **Proceed** to Step 3.
+#### Persistence Gate (MANDATORY — blocking)
+
+Step 2b is NOT complete until every substep below is executed AND verified. The `ird-gate` hook blocks implementation edits until the pending sentinel is removed.
+
+Before spawning the requirements-planner at Step 2, the orchestrator MUST create the pending sentinel:
+
+```bash
+mkdir -p brain/sessions && : > "brain/sessions/.ird-pending-{issue-number}"
+```
+
+After user approval in Phase 2, execute these substeps in order. Do not proceed to Step 3 until all four are verified.
+
+1. **Write IRD to disk.** `Write` the approved IRD to `brain/sessions/ird-{issue-number}.md` in the exact table format above.
+   - **Verify:** `Read` the file back. Confirm Constraints, Design Decisions, and AC Coverage tables are present.
+2. **Post FULL IRD as a GitHub comment.** `gh issue comment {issue-number} --body-file brain/sessions/ird-{issue-number}.md`. The comment must contain the **complete** IRD verbatim — no summary, no link to the local file (it is deleted at Step 8). The GitHub comment IS the permanent audit record.
+   - **Verify:** `gh issue view {issue-number} --comments --json comments` and confirm the most recent comment contains the IRD header (`**Constraints:**`) and table.
+3. **Lint** the IRD file with the project's markdown linter.
+4. **Remove the pending sentinel** only after substeps 1–3 verify: `rm "brain/sessions/.ird-pending-{issue-number}"`. The `ird-gate` hook will continue to block Edit/Write/MultiEdit on implementation files until this sentinel is gone.
+
+If any substep fails, fix in place and re-verify. Do NOT remove the sentinel to unblock yourself — that defeats the gate.
 
 All subsequent steps MUST read the IRD from `brain/sessions/ird-{issue-number}.md` using `Read`. Never from context or memory.
 
