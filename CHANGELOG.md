@@ -2,6 +2,16 @@
 
 All notable changes to the workflow-engine will be documented in this file.
 
+## [1.9.1] - 2026-04-26
+
+### Fixed (1.9.1)
+
+- **sync.sh now reports silent failures** — the EXIT trap previously ran `cleanup` and returned the prior exit code with no diagnostic, so any `set -e` death (e.g. the `((counter++))` post-increment bug fixed in 1.8.x) looked like a successful run. The trap now prints the exit code, failing line number, and last command on non-zero exit, plus a hint to re-run with `bash -x`. No files-updated claim is made when the script aborts.
+
+### Why (1.9.1)
+
+Observed failure mode: a Deacon consumer reported `sync.sh` printing "Updating from v1.8.0 to v1.9.0..." on every run, with no files actually changing and no error shown. Root cause was the consumer's local copy of `workflow-sync.sh` predated the `((agent_count++))` fix from 1.8.x, but the silent EXIT trap masked the problem entirely. The chicken-and-egg (broken sync can't self-update) had to be unstuck by hand. Visible error reporting prevents future silent deaths from being invisible.
+
 ## [1.9.0] - 2026-04-14
 
 ### Added (1.9.0)

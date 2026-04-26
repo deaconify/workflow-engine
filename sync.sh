@@ -23,7 +23,13 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 cleanup() {
+  local exit_code=$?
   rm -rf "$TEMP_DIR"
+  if [[ $exit_code -ne 0 ]]; then
+    echo -e "${RED}[error]${NC} sync aborted (exit ${exit_code}) at line ${BASH_LINENO[0]:-?} — last command: ${BASH_COMMAND:-?}" >&2
+    echo -e "${RED}[error]${NC} no files were updated. re-run with: bash -x $0" >&2
+  fi
+  exit $exit_code
 }
 trap cleanup EXIT
 
